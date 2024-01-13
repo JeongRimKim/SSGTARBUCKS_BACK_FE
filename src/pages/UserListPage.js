@@ -23,7 +23,7 @@ function UserListPage() {
         <tbody>
         <tr>
                 <td>점주 조회</td>
-                <td>점주 조회</td>
+                <td>점주 조회222</td>
                 <td>점주 조회</td>
                 <td>점주 조회</td>
         </tr>
