@@ -37,6 +37,7 @@ export async function action({ request }) {
 
     
     console.log("response>>>>>>", response);
+    //데이터 삽입
     resData = response.data;
 
     // 자바의 TokenDTO 에 저장된 필드명
