@@ -6,7 +6,7 @@ import {
   useNavigation,
 } from 'react-router-dom';
 
-//회원가입창 - 참고(삭제)
+//회원가입창 - 참고(삭제가능)
 function AuthForm() {
   const navigation = useNavigation();
 
