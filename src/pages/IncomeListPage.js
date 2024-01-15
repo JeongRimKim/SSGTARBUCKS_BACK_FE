@@ -1,31 +1,13 @@
 import { json, useLoaderData } from 'react-router-dom';
 import { getAuthToken } from '../util/auth';
-import { useEffect, useState } from 'react';
 
 // axios import 
 import axios from 'axios';
 
 
 function IncomeListPage() {
-  const users = useLoaderData();
-  console.log("UserListPage,users>>>>>>>>>>>>.", users);
   const incomeList = useLoaderData();
   console.log("IncomeListPage, incomeList >>>>>>>>>>>>.", incomeList);
-
-  const [fetchedIncomeList, setFetchedIncomeList] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/v1/income/list/');
-        setFetchedIncomeList(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <>
@@ -47,9 +29,9 @@ function IncomeListPage() {
           </tr>
         </thead>
         <tbody>
-          {incomeList.map((incomeItem) => (
-            <tr key={incomeItem.income_id}>
-              <td><input type="checkbox"/></td>
+          {incomeList.map((incomeItem, index) => (
+            <tr key={`${incomeItem.income_id}-${index}`}>
+              <td><input type="checkbox" /></td>
               <td>{incomeItem.income_id}</td>
               <td>{incomeItem.income_code}</td>
               <td>{incomeItem.income_date}</td>
@@ -60,7 +42,6 @@ function IncomeListPage() {
               <td>{incomeItem.item_id}</td>
               <td>{incomeItem.item_exp}</td>
               <td>{incomeItem.product_name}</td>
-
             </tr>
           ))}
         </tbody>
@@ -100,38 +81,6 @@ export async function loader({ request }) {
   }
 
   const resData = response.data;
-  console.log("resData", resData);
-  return resData;
-}
-
-
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-// fetch 기반
-export async function loader2({ request }) {
-  console.log("MyPagePage,loader>>>>>>>>>>>>.", request)
-  const token = getAuthToken();
-  const email = localStorage.getItem("email");
-  console.log("token:", token);
-  console.log("email:", email);
-  const authData = {
-    email: email
-  }
-  const response = await fetch("http://localhost:8000/api/mypage/", {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      'jwtAuthToken': token
-    },
-    body: JSON.stringify(authData),
-  });
-
-
-  if (!response.ok) {
-    throw json({ message: 'Could not save event.' }, { status: 500 });
-  }
-
-  const resData = await response.data;
   console.log("resData", resData);
   return resData;
 }
