@@ -10,6 +10,9 @@ import { action as logoutAction } from './pages/Logout.js';
 import  UserListPage,{ loader as userListLoader} from './pages/UserListPage.js';
 import UpdatePage ,{loader as updateLoader} from "./pages/UpdatePage.js";
 import IncomeListPage, {loader as incomeLoader } from "./pages/IncomeListPage.js";
+import StockListPage, {loader as stockLoader }  from "./pages/StockListPage.js";
+
+
 
 const router = createBrowserRouter([
   {
@@ -36,6 +39,9 @@ const router = createBrowserRouter([
        },
        {path:'income/list', element:<IncomeListPage />,
         loader: incomeLoader
+       },
+       {path:'stock/list', element:<StockListPage />,
+        loader: stockLoader
        }
     ]
   }
