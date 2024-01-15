@@ -44,6 +44,14 @@ export default function MainNavigation() {
 
       <br/>
       {token && <a>지점명 : {branch_name}</a>}
+
+      <br />
+      {token && <NavLink
+        to="/income/list"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >입고목록</NavLink>}
     </>
 
   )

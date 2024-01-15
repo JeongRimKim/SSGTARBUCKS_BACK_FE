@@ -9,6 +9,7 @@ import { tokenLoader } from './util/auth';
 import { action as logoutAction } from './pages/Logout.js';
 import  UserListPage,{ loader as userListLoader} from './pages/UserListPage.js';
 import UpdatePage ,{loader as updateLoader} from "./pages/UpdatePage.js";
+import IncomeListPage, {loader as incomeLoader } from "./pages/IncomeListPage.js";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,9 @@ const router = createBrowserRouter([
        },
        {path:'admin', element:<UpdatePage />,
         loader: updateLoader
+       },
+       {path:'income/list', element:<IncomeListPage />,
+        loader: incomeLoader
        }
     ]
   }

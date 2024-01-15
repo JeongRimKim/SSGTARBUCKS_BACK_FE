@@ -4,7 +4,7 @@ export default function HomePage() {
         <>
             <h1>인트로 페이지</h1>
             <p></p> 
-            <h2>김정윤 test</h2>
+
         </>
     )
 }
