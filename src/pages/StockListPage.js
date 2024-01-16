@@ -78,7 +78,7 @@ function StockListPage() {
 
   return (
     <>
-      <h1>보관목록</h1>
+      <h1>보관장소 목록</h1>
         보관유형
         <select onChange={(e) => setSelectedStorageType(e.target.value === '매장' ? 'FR' : e.target.value === '창고' ? 'BA' : '')}>
             <option>유형선택</option>

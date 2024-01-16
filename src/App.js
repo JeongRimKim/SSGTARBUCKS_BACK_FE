@@ -11,8 +11,9 @@ import  UserListPage,{ loader as userListLoader} from './pages/UserListPage.js';
 import UpdatePage ,{loader as updateLoader} from "./pages/UpdatePage.js";
 import IncomeListPage, {loader as incomeLoader } from "./pages/IncomeListPage.js";
 import StockListPage, {loader as stockLoader }  from "./pages/StockListPage.js";
-
-
+import ProductListPage, {loader as productLoader }  from "./pages/ProductListPage.js";
+import OutcomeListPage, {loader as outcomeLoader } from "./pages/OutcomeListPage.js";
+import SearchResultPage, {loader as searchLoader } from "./pages/SearchResultPage.js";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,15 @@ const router = createBrowserRouter([
        },
        {path:'stock/list', element:<StockListPage />,
         loader: stockLoader
+       },
+       {path:'product/list', element:<ProductListPage />,
+        loader: productLoader
+       },
+       {path:'stock/sale/list', element:<OutcomeListPage />,
+        loader: outcomeLoader
+       },
+       {path:'/branch/integrate/search/:searchWord', element:<SearchResultPage />,
+        loader: searchLoader
        }
     ]
   }

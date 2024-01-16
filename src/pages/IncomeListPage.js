@@ -16,8 +16,9 @@ function IncomeListPage() {
         <thead>
           <tr>
             <th></th>
+            <th>번호</th>
             <th>입고번호</th>
-            <th>일련번호</th>
+            <th>입고코드</th>
             <th>입고일자</th>
             <th>입고총개수</th>
             <th>입고상태</th>
@@ -32,6 +33,7 @@ function IncomeListPage() {
           {incomeList.map((incomeItem, index) => (
             <tr key={`${incomeItem.income_id}-${index}`}>
               <td><input type="checkbox" /></td>
+              <td>{index+1}</td>
               <td>{incomeItem.income_id}</td>
               <td>{incomeItem.income_code}</td>
               <td>{incomeItem.income_date}</td>
