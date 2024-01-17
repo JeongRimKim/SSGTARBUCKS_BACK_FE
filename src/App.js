@@ -1,6 +1,6 @@
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/Home";
+import HomePage ,{ loader as homeLoader}from "./pages/Home";
 import SignupPage ,{ action as signupAction } from "./pages/SignupPage.js";
 import RootLayout from "./pages/Root";
 import ErrorPage from './pages/Error';
@@ -23,7 +23,8 @@ const router = createBrowserRouter([
     id:'tokenRoot',
     loader:tokenLoader,
     children:[
-      {index: true, element:<HomePage />},
+      {index: true, element:<HomePage />, loader: homeLoader},
+
       {path:'signup', element:<SignupPage />},
       
       {path:'auth', 

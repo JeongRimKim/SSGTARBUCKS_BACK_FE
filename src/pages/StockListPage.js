@@ -42,9 +42,12 @@ function StockListPage() {
       });
 
       console.log("Update Quantity Response:", response.data);
+      window.location.reload();
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
+
+
   };
 
   console.log(selectedStorageLocation);
