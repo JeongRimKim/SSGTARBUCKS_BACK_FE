@@ -4,7 +4,8 @@ import { getAuthToken } from '../util/auth';
 
 import axios from 'axios';
 
-const DateSelector = ({ onSelectDate }) => {
+//지점-메인
+const BranchMainRenderer = ({ onSelectDate }) => {
   const [totalList, setTotalList] = useState(useLoaderData());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -101,7 +102,15 @@ const DateSelector = ({ onSelectDate }) => {
   );
 };
 
+//관리자-메인
+const AdminMainRenderer = ({ onSelectDate }) => {
+
+
+};
+
 export default function HomePage() {
+  const token = getAuthToken();
+  const branch_id = localStorage.getItem("branch_id");  
 
   const handleSelectExpDateList = (newDate) => {
     console.log("Selected date:", newDate.toISOString().split('T')[0]);
@@ -110,7 +119,7 @@ export default function HomePage() {
   return (
     <>
       <h1>인트로(메인) 페이지</h1>
-      <DateSelector onSelectDate={handleSelectExpDateList} />
+      {branch_id && branch_id.startsWith('b') ? <BranchMainRenderer onSelectDate={handleSelectExpDateList} /> : <AdminMainRenderer />}
     </>
   );
 }
