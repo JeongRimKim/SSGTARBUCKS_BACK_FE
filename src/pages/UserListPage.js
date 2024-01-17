@@ -10,24 +10,32 @@ function UserListPage() {
   console.log("UserListPage,users>>>>>>>>>>>>.", users)
   return (
     <>
-      <h1>회원 정보</h1>
+      <h1>지점정보 및 회원정보</h1>
       <table border="1">
         <thead>
           <tr>
             <th>아이디</th>
-            <th>직급</th>
+            <th>이름</th>
+            <th>연락처</th>
+            <th>이메일</th>
             <th>지점코드</th>
             <th>지점명</th>
+            <th>지점주소</th>
+
           </tr>
         </thead>
         <tbody>
-        <tr>
-                <td>점주 조회</td>
-                <td>점주 조회2</td>
-                <td>점주 조회</td>
-                <td>점주 조회</td>
-        </tr>
+          <tr>
+            <td>{users.user_id}</td>
+            <td>{users.user_name}</td>
+            <td>{users.user_phone}</td>
+            <td>{users.user_email}</td>            
+            <td>{users.branch_id}</td>
+            <td>{users.branch_name}</td>
+            <td>{users.branch_address}</td>
 
+
+          </tr>
         </tbody>
       </table>
     </>
@@ -48,10 +56,13 @@ export async function loader({ request }) {
 
   const response = await axios({
     method: "GET",
-    url: "http://localhost:8000/api/v1/branch/main",
+    url: "http://localhost:8000/api/v1/branch/info",
     headers: {
       'Content-Type': 'application/json',
       'jwtauthtoken': token
+    },
+    params: {
+      branch_id: branch_id
     }
   });
 
