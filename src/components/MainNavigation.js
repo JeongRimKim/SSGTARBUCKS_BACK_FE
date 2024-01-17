@@ -65,6 +65,23 @@ export default function MainNavigation() {
 
       <br/>
       {token && <p>지점명 : {branch_name}</p>}
+      <br />
+      {token && <NavLink
+        to="/location/new"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >장소등록</NavLink>}
+      <br />
+      {token && <NavLink
+        to="/qrcode/search"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >QR검색</NavLink>}
+      <br />
+
+      <hr/>
 
       <br />
       {token && <NavLink
