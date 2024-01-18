@@ -44,6 +44,7 @@ function IncomeListPage() {
               <td>{incomeItem.item_id}</td>
               <td>{incomeItem.item_exp}</td>
               <td>{incomeItem.product_name}</td>
+              <td><input type="button" value="QR" /></td>
             </tr>
           ))}
         </tbody>

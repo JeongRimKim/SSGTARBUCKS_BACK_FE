@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { json, useLoaderData } from 'react-router-dom';
 import { getAuthToken } from '../util/auth';
+import QRScanner from '../components/QRScanner';
+
 import axios from 'axios';
 
 function StockListPage() {
@@ -8,8 +10,6 @@ function StockListPage() {
   const [stockList, setStockList] = useState(initialStockList);
   const [selectedStorageType, setSelectedStorageType] = useState(''); 
   const [selectedStorageLocation, setSelectedLocation] = useState(''); 
-  const [selectedStorageCol, setSelectedCol] = useState(''); 
-  const [selectedStorageRow, setSelectedRow] = useState(''); 
 
   //보관개수수정
   const handleQuantityChange = async (index, delta,itemId) => {
@@ -46,15 +46,13 @@ function StockListPage() {
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
-
-
   };
 
   console.log(selectedStorageLocation);
   
   //보관유형 셀렉트박스
   const filterStockList = () => {
-    if (!selectedStorageType && !selectedStorageLocation && !selectedStorageCol && !selectedStorageRow) {
+    if (!selectedStorageType && !selectedStorageLocation) {
       return stockList; 
     }
 
@@ -67,14 +65,6 @@ function StockListPage() {
     if (selectedStorageLocation) {
       filteredList = filteredList.filter(stockItem => stockItem.location_section_name === selectedStorageLocation);
     } 
-
-    if (selectedStorageCol) {
-      filteredList = filteredList.filter(stockItem => stockItem.location_code.substring(6, 8) === selectedStorageCol);
-    }
-
-    if (selectedStorageRow) {
-      filteredList = filteredList.filter(stockItem => stockItem.location_code.substring(9, 11) === selectedStorageRow);
-    }
     
     return filteredList;
   };
@@ -103,9 +93,9 @@ function StockListPage() {
             <option>기타</option>
         </select>
 
-        세로열<input type="text" onKeyUp={(e) => setSelectedCol(e.target.value.padStart(2, '0'))}/>
-        가로열<input type="text" onKeyUp={(e) => setSelectedRow(e.target.value.padStart(2, '0'))} />
-        <input type="button" value="선택이동" />
+
+
+
       <table border="1">
         <thead>
           <tr>
@@ -115,8 +105,6 @@ function StockListPage() {
             <th>보관유형</th>
             <th>보관장소</th>
             <th>보관장소별칭</th>
-            <th>세로줄</th>
-            <th>가로줄</th>
             <th>보관번호</th>
             <th>보관개수</th>
             <th>보관상품명</th>
@@ -133,8 +121,6 @@ function StockListPage() {
               <td>{stockItem.location_area === 'FR' ? '매장' : stockItem.location_area === 'BA' ? '창고' : ''}</td>
               <td>{stockItem.location_section_name}</td>
               <td>{stockItem.location_alias}</td>
-              <td><span>{stockItem.location_code.substring(6, 8)}</span></td>
-              <td><span>{stockItem.location_code.substring(9, 11)}</span></td>
               <td>{stockItem.stock_id}</td>
               <td>
                 <input type='hidden' value={stockItem.item_id} />

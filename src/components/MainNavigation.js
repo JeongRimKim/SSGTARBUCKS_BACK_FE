@@ -48,20 +48,13 @@ export default function MainNavigation() {
         <button>Logout</button>
       </Form>}
 
-      {token && <NavLink
-        to="/admin"
-        className={({ isActive }) =>
-          isActive ? classes.menu : undefined
-        }
-      >관리자전용</NavLink>}
-
       <br />
       {token && <NavLink
-        to="/branch"
+        to="/mypage"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >회원전용</NavLink>}
+      >마이페이지</NavLink>}
       <hr />
       {token && <p>지점명 : {branch_name}</p>}
 
@@ -86,7 +79,15 @@ export default function MainNavigation() {
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >입고관리</NavLink>}
+      >입고관리-입고목록</NavLink>}
+
+      <br />
+      {token && <NavLink
+        to="/qrcode/inspection"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >입고관리-검수하기</NavLink>}
 
 
       <br />
@@ -95,7 +96,7 @@ export default function MainNavigation() {
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >재고관리</NavLink>}
+      >재고관리-보관목록</NavLink>}
 
       <br />
       {token && <NavLink
@@ -103,7 +104,7 @@ export default function MainNavigation() {
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >상품관리</NavLink>}
+      >상품관리-재고목록</NavLink>}
 
       <br />
       {token && <NavLink
@@ -111,7 +112,7 @@ export default function MainNavigation() {
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >출고관리</NavLink>}
+      >출고관리-판매상품갱신/승인</NavLink>}
       <hr />
       {token && <NavLink
         to="/admin/branch/list"

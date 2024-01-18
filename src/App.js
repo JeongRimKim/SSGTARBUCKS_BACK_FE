@@ -7,7 +7,7 @@ import ErrorPage from './pages/Error';
 import AuthenticationPage, { action as authAction } from "./pages/Authentication.js";
 import { tokenLoader } from './util/auth';
 import { action as logoutAction } from './pages/Logout.js';
-import UserListPage, { loader as userListLoader } from './pages/UserListPage.js';
+import MyPage, { loader as userListLoader } from './pages/MyPage.js';
 import UpdatePage, { loader as updateLoader } from "./pages/UpdatePage.js";
 import IncomeListPage, { loader as incomeLoader } from "./pages/IncomeListPage.js";
 import StockListPage, { loader as stockLoader } from "./pages/StockListPage.js";
@@ -19,7 +19,7 @@ import QRSearchResultPage from "./pages/QRSearchResultPage.js";
 import RegisterLocationPage, { action as registerLocationAction } from "./pages/RegisterLocationPage";
 import BranchListPage, { loader as branchLoader } from "./pages/BranchListPage.js";
 import BranchDetailPage, { loader as branchDetailLoader } from "./pages/BranchDetailPage.js";
-
+import InspectionPage from "./pages/InspectionPage.js";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         action: logoutAction,
       },
       {
-        path: 'branch', element: <UserListPage />,
+        path: 'mypage', element: <MyPage />,
         loader: userListLoader
       },
       {
@@ -88,6 +88,9 @@ const router = createBrowserRouter([
       {
         path: 'admin/branch/detail/:branch_id', element: <BranchDetailPage />,
         loader: branchDetailLoader
+      },
+      {
+        path: 'qrcode/inspection', element: <InspectionPage />
       }
     ]
   }
