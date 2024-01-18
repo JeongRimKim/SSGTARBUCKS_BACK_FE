@@ -40,7 +40,7 @@ function RegisterLocationForm() {
         return;
       }
 
-      if (!/^[가-힣]+$/.test(row.location_area) || !/^[가-힣]+$/.test(row.location_section_name) || !/^[0-9]+$/.test(row.location_column) || !/^[0-9]+$/.test(row.location_row)) {
+      if (!/^[가-힣]+$/.test(row.location_area) || !/^[가-힣]+$/.test(row.location_section_name) ) {
         console.warn('입력 형식이 올바르지 않습니다.');
         event.preventDefault(); // 폼 전송 방지
         return;
@@ -54,8 +54,6 @@ function RegisterLocationForm() {
       return {
         location_area: row.location_area,
         location_section_name: row.location_section_name,
-        location_column: row.location_column,
-        location_row: row.location_row,
         location_alias: row.location_alias,
       };
     });
@@ -76,12 +74,6 @@ function RegisterLocationForm() {
                 </td>
                 <td>
                   <input name="location_section_name" type="text" value={row.location_section_name} onChange={(e) => handleInputChange(index, 'location_section_name', e.target.value)} placeholder="보관장소(구역)" />
-                </td>
-                <td>
-                  <input name="location_column" type="text" value={row.location_column} onChange={(e) => handleInputChange(index, 'location_column', e.target.value)} placeholder="세로열" />
-                </td>
-                <td>
-                  <input name="location_row" type="text" value={row.location_row} onChange={(e) => handleInputChange(index, 'location_row', e.target.value)} placeholder="가로행" />
                 </td>
                 <td>
                   <input name="location_alias" type="text" value={row.location_alias} onChange={(e) => handleInputChange(index, 'location_alias', e.target.value)} placeholder="구역명칭" />
