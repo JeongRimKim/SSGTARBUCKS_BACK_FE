@@ -137,8 +137,8 @@ export async function loader({ request, params }) {
   const user_type = localStorage.getItem("user_type");
   console.log("token:", token);
   console.log("branch_id:", branch_id);
-  let url = null;
   const searchWord = params['searchWord'];
+  let url = null;
   if (user_type === 'manager') {
     url = "http://localhost:8000/api/v1/branch/integrate/search/";
   } else {
