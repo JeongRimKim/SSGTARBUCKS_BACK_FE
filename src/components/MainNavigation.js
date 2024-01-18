@@ -62,10 +62,9 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >회원전용</NavLink>}
-
-      <br/>
+      <hr />
       {token && <p>지점명 : {branch_name}</p>}
-      <br />
+
       {token && <NavLink
         to="/location/new"
         className={({ isActive }) =>
@@ -80,8 +79,6 @@ export default function MainNavigation() {
         }
       >QR검색</NavLink>}
       <br />
-
-      <hr/>
 
       <br />
       {token && <NavLink
@@ -115,7 +112,13 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >출고관리</NavLink>}
-
+      <hr />
+      {token && <NavLink
+        to="/admin/branch/list"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >전지점정보조회</NavLink>}
     </>
 
   )

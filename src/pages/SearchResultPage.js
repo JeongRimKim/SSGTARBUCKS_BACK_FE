@@ -66,36 +66,43 @@ const BranchMainRenderer = () => {
 
 //관리자 - 검색결과화면
 const AdminMainRenderer = () => {
+  const userList = useLoaderData();
   const { searchWord } = useParams();
-  console.log(searchWord);
-  const handleRetrieve = async () => {
-    try {
-      const token = getAuthToken();
-      const branch_id = localStorage.getItem("branch_id");
-
-      const response = await axios({
-        method: "GET",
-        url: `http://localhost:8000/api/v1/admin/main/`,
-        headers: {
-          'Content-Type': 'application/json',
-          'jwtauthtoken': token
-        },
-        params: {
-          branch_id: branch_id
-          ,searchWord : {searchWord}
-        }
-      });
-
-      console.log("select exp date :", response.data);
-
-    } catch (error) {
-      console.error('Error selecting exp date:', error);
-    }
-  };
+  console.log("AdminMainRenderer, searchword >>>>>>>>>>>>>>>>>>>>>>>",searchWord);
+  console.log("AdminMainRenderer, userList >>>>>>>>>>>>>>>>>>>>>>>",userList);
 
   return (
     <>
       <h1>관리자 - '{searchWord}' 검색결과</h1>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>매니저코드</th>
+            <th>매니저이름</th>
+            <th>매니저연락처</th>
+            <th>매니저이메일</th>
+            <th>담당지점 코드</th>
+            <th>담당지점 이름</th>
+            <th>담당지점 주소</th>
+          </tr>
+        </thead>
+        <tbody>
+        {userList.map((userItem, index) => (
+          <tr key={`${userItem.user_id}-${index}`}>
+            <td>{index + 1}</td>
+            <td>{userItem.user_id}</td>
+            <td>{userItem.user_name}</td>
+            <td>{userItem.user_phone}</td>
+            <td>{userItem.user_email}</td>
+            <td>{userItem.branch_id}</td>
+            <td>{userItem.branch_name}</td>
+            <td>{userItem.branch_address}</td>
+
+          </tr>
+        ))}
+        </tbody>
+      </table>
     </>
   );
 };
@@ -107,11 +114,12 @@ function SearchResultPage() {
   const { searchWord } = useParams();
   const token = getAuthToken();
   const branch_id = localStorage.getItem("branch_id");  
+  const user_type = localStorage.getItem("user_type");  
 
   return (
     <>
 
-    {branch_id && branch_id.startsWith('b') ? <BranchMainRenderer/> : <AdminMainRenderer />}
+    { user_type === 'manager' ? <BranchMainRenderer /> : <AdminMainRenderer />}
 
     </>
   )
@@ -126,19 +134,30 @@ export async function loader({ request, params }) {
   console.log("SearchResultPage,loader>>>>>>>>>>>>.", request, params);
   const token = getAuthToken();
   const branch_id = localStorage.getItem("branch_id");
+  const user_type = localStorage.getItem("user_type");
   console.log("token:", token);
   console.log("branch_id:", branch_id);
-  
+  let url = null;
+  const searchWord = params['searchWord'];
+  if (user_type === 'manager') {
+    url = "http://localhost:8000/api/v1/branch/integrate/search/";
+  } else {
+    url = "http://localhost:8000/api/v1/admin/branch/search/";
+  }
+
+  if( searchWord == null ){
+    searchWord='';
+  }
   const response = await axios({
     method: "GET",
-    url: "http://localhost:8000/api/v1/branch/integrate/search/",
+    url: url,
     headers: {
       'Content-Type': 'application/json',
       'jwtauthtoken': token
     },
     params: {
       branch_id: branch_id
-      ,searchWord:  params['searchWord']
+      ,searchWord: searchWord
     }
   });
 
