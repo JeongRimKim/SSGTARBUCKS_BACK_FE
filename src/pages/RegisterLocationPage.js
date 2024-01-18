@@ -64,20 +64,16 @@ export async function action({ request }) {
 
   const location_area = data.getAll("location_area");
   const location_section_name = data.getAll("location_section_name");
-  const location_column = data.getAll("location_column");
-  const location_row = data.getAll("location_row");
   const location_alias = data.getAll("location_alias");
-  console.log(location_area,location_section_name,location_column,location_row,location_alias);
+  console.log(location_area,location_section_name,location_alias);
 
   const jsonDataArray = location_area.map((_, index) => ({
     location_area: getLocationArea(location_area[index]),
-    location_section_name:  getLocationSection(location_section_name[index])+"1",
-    location_section:location_section_name[index],
-    location_column: location_column[index],
-    location_row: location_row[index],
+    location_section_name: location_section_name[index],
+    location_section: getLocationSection(location_section_name[index]),
     location_alias: location_alias[index],
-    location_code : `${getLocationArea(location_area[index])}-${getLocationSection(location_section_name[index])}1-${location_column[index].toString().padStart(2, '0')}-${location_row[index].toString().padStart(2, '0')}`
-  }));
+    branch_id:branch_id
+    }));
   
 
   console.log("jsonDataArray>>",jsonDataArray);
@@ -86,7 +82,7 @@ export async function action({ request }) {
   try {
     const response = await axios({
       method: "post",
-      url: 'http://localhost:8000/api/v1/qrcode/branch/location/new',
+      url: 'http://localhost:8000/api/v1/branch/location/new',
       headers: {
         'Content-Type': 'application/json',
         'jwtauthtoken': token,
