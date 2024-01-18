@@ -17,6 +17,9 @@ import SearchResultPage, { loader as searchLoader } from "./pages/SearchResultPa
 import QRSearchPage from "./pages/QRSearchPage.js";
 import QRSearchResultPage from "./pages/QRSearchResultPage.js";
 import RegisterLocationPage, { action as registerLocationAction } from "./pages/RegisterLocationPage";
+import BranchListPage, { loader as branchLoader } from "./pages/BranchListPage.js";
+import BranchDetailPage, { loader as branchDetailLoader } from "./pages/BranchDetailPage.js";
+
 
 const router = createBrowserRouter([
   {
@@ -77,6 +80,14 @@ const router = createBrowserRouter([
       {
         path: '/branch/integrate/search/:searchWord', element: <SearchResultPage />,
         loader: searchLoader
+      },
+      {
+        path: 'admin/branch/list', element: <BranchListPage />,
+        loader: branchLoader
+      },
+      {
+        path: 'admin/branch/detail/:branch_id', element: <BranchDetailPage />,
+        loader: branchDetailLoader
       }
     ]
   }
