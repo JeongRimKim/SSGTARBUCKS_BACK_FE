@@ -83,12 +83,11 @@ export default function MainNavigation() {
 
       <br />
       {token && <NavLink
-        to="/qrcode/inspection"
+        to="/income/list/inspection"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
       >입고관리-검수하기</NavLink>}
-
 
       <br />
       {token && <NavLink

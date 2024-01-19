@@ -1,6 +1,5 @@
-import { json, useLoaderData } from 'react-router-dom';
+import { json, useLoaderData,useParams } from 'react-router-dom';
 import { getAuthToken } from '../util/auth';
-import { useParams } from 'react-router-dom';
 
 // axios import 
 import axios from 'axios';

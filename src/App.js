@@ -19,7 +19,7 @@ import QRSearchResultPage from "./pages/QRSearchResultPage.js";
 import RegisterLocationPage, { action as registerLocationAction } from "./pages/RegisterLocationPage";
 import BranchListPage, { loader as branchLoader } from "./pages/BranchListPage.js";
 import BranchDetailPage, { loader as branchDetailLoader } from "./pages/BranchDetailPage.js";
-import InspectionPage from "./pages/InspectionPage.js";
+import InspectionPage, { loader as inspectionLoader } from "./pages/InspectionPage.js";
 
 const router = createBrowserRouter([
   {
@@ -90,7 +90,8 @@ const router = createBrowserRouter([
         loader: branchDetailLoader
       },
       {
-        path: 'qrcode/inspection', element: <InspectionPage />
+        path: 'income/list/inspection/:incomeId', element: <InspectionPage />,
+        loader: inspectionLoader
       }
     ]
   }

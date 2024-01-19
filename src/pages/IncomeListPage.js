@@ -1,6 +1,5 @@
-import { json, useLoaderData } from 'react-router-dom';
+import { json, useLoaderData,NavLink } from 'react-router-dom';
 import { getAuthToken } from '../util/auth';
-
 // axios import 
 import axios from 'axios';
 
@@ -25,6 +24,7 @@ function IncomeListPage() {
             <th>입고목록번호</th>
             <th>입고상품개수</th>
             <th>입고상품번호</th>
+            <th>입고상품코드</th>
             <th>입고상품유통기한</th>
             <th>입고상품명</th>
           </tr>
@@ -33,7 +33,7 @@ function IncomeListPage() {
           {incomeList.map((incomeItem, index) => (
             <tr key={`${incomeItem.income_id}-${index}`}>
               <td><input type="checkbox" /></td>
-              <td>{index+1}</td>
+              <td><NavLink to={`inspection/${incomeItem.income_id}`} >{index+1}</NavLink></td>
               <td>{incomeItem.income_id}</td>
               <td>{incomeItem.income_code}</td>
               <td>{incomeItem.income_date}</td>
@@ -44,7 +44,6 @@ function IncomeListPage() {
               <td>{incomeItem.item_id}</td>
               <td>{incomeItem.item_exp}</td>
               <td>{incomeItem.product_name}</td>
-              <td><input type="button" value="QR" /></td>
             </tr>
           ))}
         </tbody>
