@@ -3,35 +3,70 @@ import { useLocation } from 'react-router-dom';
 
 
 function QRSearchResultPage() {
-    const {state} = useLocation();
-    const searchResult = state?.storage;
-    if (!searchResult) {
-      // Handle the case where storage is undefined or null
-      return <p>Loading... {searchResult}</p>; // Or any other loading state
-    }
-    const { product_id, product_name, product_unit, product_spec, qrcode_id, qrcode_date, item_id, item_code, item_exp, location_code, location_section_name, location_alias, location_column, location_row } = searchResult;
-    return (
-      <>
-         <h1>검색결과</h1>
-      <div>
-        <h5>상품정보</h5>
-        품목 id: {product_id}<br />
-        상품명: {product_name}({product_unit},{product_spec})<br />
-        QR코드: {qrcode_id} (생성일자: {qrcode_date})<br />
-        (생략) 상품 id: {item_id}<br />
-        상품 코드: {item_code}<br />
-        상품 유통기한: {item_exp}<br />
-      </div>
-      <div>
-        <h5>보관장소정보</h5>
-        보관장소코드: {location_code}<br />
-        보관장소명: {location_section_name}<br />
-        보관장소별칭: {location_alias}<br />
-        보관위치: {location_column} 열, {location_row} 행<br />
-      </div>
-      </>
-    );
+  const { state } = useLocation();
+  const searchResult = state?.storage;
+  if (!searchResult) {
+    // Handle the case where storage is undefined or null
+    return <p>Loading... {searchResult}</p>; // Or any other loading state
   }
+  const resultMap = searchResult.map((item, index) => ({
+    product_id: item.product_id,
+    product_name: item.product_name,
+    product_standard: item.product_standard,
+    product_unit: item.product_unit,
+    category_name: item.category_name,
+    product_spec: item.product_spec,
+    item_id: item.item_id,
+    item_code: item.item_code,
+    item_exp: item.item_exp,
+    image_path: item.image_path,
+    item_qrcode_value: item.item_qrcode_value,
+    item_qrcode_path: item.item_qrcode_path,
+    stock_quantity: item.stock_quantity,
+    stock_date: item.stock_date,
+    location_code: item.location_code,
+    location_section_name: item.location_section_name,
+    location_alias: item.location_alias,
+    location_qrcode_value: item.location_qrcode_value,
+    location_qrcode_path: item.location_qrcode_path,
+  }));
+
+  return (
+    <>
+      <h1>검색결과</h1>
+      <table>
+        <thead>
+          <th> 상품정보</th>
+          <th></th>
+          <th>위치정보</th>
+        </thead>
+        <tbody>
+
+          {resultMap.map((result, index) => (
+            <tr key={index}>
+              <td>
+                {result.category_name}&nbsp;&nbsp;
+                {result.product_id},&nbsp;&nbsp;
+                {result.product_name}({result.product_standard} {result.product_unit})&nbsp;&nbsp;
+                {result.item_code}&nbsp;&nbsp;
+                {result.item_exp}&nbsp;&nbsp;
+                {result.item_qrcode_value}
+              </td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>
+                {result.location_code},{result.stock_quantity},{result.location_section_name},{result.location_alias},{result.location_qrcode_value}
+              </td>
+
+            </tr>
+          ))}
+
+        </tbody>
+
+      </table>
+
+    </>
+  );
+}
 
 
 export default QRSearchResultPage;
