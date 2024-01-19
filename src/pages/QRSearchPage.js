@@ -7,6 +7,7 @@ import QRScanner from '../components/QRScanner';
 function QRSearchPage() {
   const [scanResult, setScanResult] = useState('');
   const [show, hide] = useState(false);
+  const branch_id = localStorage.getItem("branch_id");
   const navigate = useNavigate();
 
   const handleScanWebCam = (result) => {
@@ -31,7 +32,9 @@ function QRSearchPage() {
             headers: {
               'Content-Type': 'application/json',
               'jwtauthtoken': token
-            }
+            },params: {
+              branch_id: branch_id
+            },
           }
         );
 
