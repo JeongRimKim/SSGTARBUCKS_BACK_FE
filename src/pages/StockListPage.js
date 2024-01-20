@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { json, redirect, useLoaderData, } from 'react-router-dom';
+import { json, useLoaderData } from 'react-router-dom';
 import { getAuthToken } from '../util/auth';
 
 import axios from 'axios';
+import LocationForm from '../components/LocationForm';
 
 function StockListPage() {
   const initialStockList = useLoaderData();
   const [stockList, setStockList] = useState(initialStockList);
-  const [movestockList, setMovestockList] = useState(initialStockList);
   const [selectedStorageType, setSelectedStorageType] = useState('');
   const [selectedStorageLocation, setSelectedLocation] = useState('');
   const [selectedLocationAlias, setSelectedLocationAlias] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
-  const [MoveItemsModal, setMoveItemsModal] = useState(false);
-  const [selectedMoveStorageType, setSelectedMovedStorageType] = useState('');
-  const [selectedMoveStorageLocation, setSelecteMovedLocation] = useState('');
-  const [selectedMoveLocationAlias, setSelectedMoveLocationAlias] = useState('');
-
+  const [showLocationForm, setShowLocationForm] = useState(false);
   //보관개수수정
   const handleQuantityChange = async (index, delta, itemId) => {
     try {
@@ -102,44 +98,11 @@ function StockListPage() {
     setSelectedItems(updatedSelectedItems);
   };
 
-
-  const closeMoveItemsModal = () => {
-    setMoveItemsModal(false);
+  //상품이동 모달 켜기
+  const handleMoveItemsClick = () => {
+    setShowLocationForm(true);
   };
-
-  //상품이동
-  const moveSelectedItems = () => {
-    setMoveItemsModal(true);
-    console.log('Selected Items:', selectedItems);
-    //상품번호
-    //모달창을 뛰어줘
-    const itemIds = selectedItems.map(item => item.item_id);
-    setSelectedItems(itemIds);
-    
-  };
-
-  //이동보관장소 셀렉트박스
-  const filterMoveStockList = () => {
-    if (!selectedMoveStorageType && !selectedMoveStorageLocation && !selectedMoveLocationAlias) {
-      return movestockList;
-    }
-
-    let filteredList = movestockList;
-
-    if (selectedMoveStorageType) {
-      filteredList = filteredList.filter(stockItem => stockItem.location_area === selectedMoveStorageType);
-    }
-
-    if (selectedMoveStorageLocation) {
-      filteredList = filteredList.filter(stockItem => stockItem.location_section_name === selectedMoveStorageLocation);
-    }
-
-    if (selectedMoveLocationAlias) {
-      filteredList = filteredList.filter(stockItem => stockItem.location_alias === selectedMoveLocationAlias);
-    }
-
-    return filteredList;
-  };
+  
   //선택해제
   const resetSelectedItems = () => {
     //데이터 삭제
@@ -151,46 +114,10 @@ function StockListPage() {
 
   return (
     <>
-      {MoveItemsModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeMoveItemsModal}>&times;</span>
-            
-            <h1>이동 장소 선택</h1>
-            보관유형
-            <select onChange={(e) => setSelectedMovedStorageType(e.target.value === '매장' ? 'FR' : e.target.value === '창고' ? 'BA' : '')}>
-              <option>유형선택</option>
-              <option>매장</option>
-              <option>창고</option>
-            </select>
-
-            보관장소
-            <select onChange={(e) => setSelecteMovedLocation(e.target.value === '구역선택' ? '' : e.target.value)}>
-              <option>구역선택</option>
-              <option>상부장</option>
-              <option>하부장</option>
-              <option>냉장고</option>
-              <option>냉동고</option>
-              <option>쇼케이스</option>
-              <option>매대</option>
-              <option>진열대</option>
-              <option>다용도랙</option>
-              <option>기타</option>
-            </select>
-
-            소분류
-            <select onChange={(e) => setSelectedMoveLocationAlias(e.target.value === '별칭선택' ? '' : e.target.value)}>
-              <option>명칭선택</option>
-              {aliasList().map((alias, index) => (
-                <option key={index}>{alias}</option>
-              ))}
-            </select>
-          </div>
-
-          <button onClick={() => action({ selectedMoveStorageType, selectedMoveLocationAlias, selectedItems })}>이동</button>
-        </div>
+      {showLocationForm && (
+        <LocationForm selectedItems={selectedItems} stockList={initialStockList} />
       )}
-
+      
       <h1>보관장소 목록</h1>
       보관유형
       <select onChange={(e) => setSelectedStorageType(e.target.value === '매장' ? 'FR' : e.target.value === '창고' ? 'BA' : '')}>
@@ -222,7 +149,7 @@ function StockListPage() {
       </select>
 
       <br />
-      <button onClick={moveSelectedItems}>상품이동</button>
+       <button onClick={handleMoveItemsClick}>상품이동</button>
       <button onClick={resetSelectedItems}>선택해제</button>
       <table border="1">
         <thead>
@@ -303,52 +230,4 @@ export async function loader({ request }) {
 }
 
 
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//장소이동 action
-export async function action({selectedMoveStorageType,selectedMoveLocationAlias,selectedItems  }) {
-  console.log("MoveItem.action" );
 
-
-  const token = getAuthToken();
-  const branch_id = localStorage.getItem("branch_id");
-  console.log("token:", token);
-  console.log("branch_id:", branch_id);
-  const location_area = selectedMoveStorageType;
-  const location_alias = selectedMoveLocationAlias;
-
-  const jsonDataArray = {
-    branch_id:branch_id,
-    location_area: location_area,
-    location_alias: location_alias,
-    item_list :selectedItems,
-    };
-  
-  console.log("jsonDataArray>>",jsonDataArray);
-  console.log("jsonDataToString",JSON.stringify(jsonDataArray));
-  let resData = '';
-  try {
-    const response = await axios({
-      method: "post",
-      url: 'http://localhost:8000/api/v1/stock/location/move/',
-      headers: {
-        'Content-Type': 'application/json',
-        'jwtauthtoken': token,
-      },
-      params: {
-        branch_id: branch_id
-      },
-      data: JSON.stringify(jsonDataArray),
-    });
-
-    console.log("response>>>>>>", response);
-    resData = response.data;
-
-  } catch (error) {
-    console.log("error:", error);
-    throw new Error("error 발생되었습니다");
-  }
-
-  return redirect('/');
-}
-  

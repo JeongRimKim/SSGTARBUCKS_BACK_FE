@@ -153,7 +153,7 @@ export async function loader({ request }) {
 
     const response = await axios({
       method: "GET",
-      url: "http://localhost:8000/api/v1/branch/main",
+      url: "http://localhost:8000/api/v1/branch/main/",
       headers: {
         'Content-Type': 'application/json',
         'jwtauthtoken': token
