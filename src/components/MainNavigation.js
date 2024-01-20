@@ -83,7 +83,7 @@ export default function MainNavigation() {
 
       <br />
       {token && <NavLink
-        to="/income/list/inspection"
+        to="/income/specification"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
@@ -96,6 +96,14 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >재고관리-보관목록</NavLink>}
+
+      <br />
+      {token && <NavLink
+        to="/stock/checked/inspection"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >재고관리-검수상품 보관장소등록</NavLink>}
 
       <br />
       {token && <NavLink
