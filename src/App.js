@@ -100,7 +100,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'stock/checked/inspection', element: <LocationInsertPage />,
-        //loader: LocationCheckedLoader
+        loader: LocationCheckedLoader
       }
     ]
   }
