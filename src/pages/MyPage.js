@@ -70,9 +70,9 @@ const AdminMainRenderer = () => {
             <td>{users.user_name}</td>
             <td>{users.user_phone}</td>
             <td>{users.user_email}</td>            
-            <td>{users.branch_id}</td>
-            <td>{users.branch_name}</td>
-            <td>{users.branch_address}</td>
+            <td>{/*생략*/}</td>
+            <td>{/*생략*/}</td>
+            <td>{/*생략*/}</td>
 
 
           </tr>

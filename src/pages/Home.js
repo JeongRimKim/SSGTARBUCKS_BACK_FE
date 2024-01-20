@@ -39,7 +39,23 @@ const BranchMainRenderer = ({ onSelectDate }) => {
 
       console.log("select exp date :", response.data);
 
-      // Update the state with the new data
+      const resultMap = totalList.map((item, index) => ({
+        product_name: item.product_name,
+        product_standard: item.product_standard,
+        product_unit : item.product_unit,
+        product_spec:item.product_spec,
+        category_name:item.category_name,
+        item_id:item.tem_id,
+        item_exp:item.item_exp,
+        item_status:item.item_status,
+        location_code:item.location_code,
+        location_area:item.location_area,
+        location_section:item.location_section,
+        location_section_name:item.location_section_name,
+        location_alias:item.location_alias,
+        stock_quantity:item.stock_quantity
+      }));
+
       setTotalList(response.data);
 
     } catch (error) {
@@ -137,7 +153,7 @@ export async function loader({ request }) {
 
     const response = await axios({
       method: "GET",
-      url: "http://localhost:8000/api/v1/branch/main",
+      url: "http://localhost:8000/api/v1/branch/main/",
       headers: {
         'Content-Type': 'application/json',
         'jwtauthtoken': token

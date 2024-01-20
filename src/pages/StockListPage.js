@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { json, useLoaderData } from 'react-router-dom';
 import { getAuthToken } from '../util/auth';
-import QRScanner from '../components/QRScanner';
 
 import axios from 'axios';
+import LocationForm from '../components/LocationForm';
 
 function StockListPage() {
   const initialStockList = useLoaderData();
   const [stockList, setStockList] = useState(initialStockList);
-  const [selectedStorageType, setSelectedStorageType] = useState(''); 
-  const [selectedStorageLocation, setSelectedLocation] = useState(''); 
-
+  const [selectedStorageType, setSelectedStorageType] = useState('');
+  const [selectedStorageLocation, setSelectedLocation] = useState('');
+  const [selectedLocationAlias, setSelectedLocationAlias] = useState('');
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [showLocationForm, setShowLocationForm] = useState(false);
   //보관개수수정
-  const handleQuantityChange = async (index, delta,itemId) => {
+  const handleQuantityChange = async (index, delta, itemId) => {
     try {
       const updatedStockList = [...stockList];
       const updatedItem = { ...updatedStockList[index] };
@@ -24,7 +26,7 @@ function StockListPage() {
 
       const token = getAuthToken();
       const branch_id = localStorage.getItem("branch_id");
-      
+
       const response = await axios({
         method: "PUT",
         url: `http://localhost:8000/api/v1/stock/quantity/`,
@@ -36,8 +38,8 @@ function StockListPage() {
           branch_id: branch_id
         },
         data: {
-          item_id : itemId
-          ,stock_quantity: updatedItem.stock_quantity
+          item_id: itemId
+          , stock_quantity: updatedItem.stock_quantity
         }
       });
 
@@ -48,12 +50,11 @@ function StockListPage() {
     }
   };
 
-  console.log(selectedStorageLocation);
-  
+
   //보관유형 셀렉트박스
   const filterStockList = () => {
-    if (!selectedStorageType && !selectedStorageLocation) {
-      return stockList; 
+    if (!selectedStorageType && !selectedStorageLocation && !selectedLocationAlias) {
+      return stockList;
     }
 
     let filteredList = stockList;
@@ -64,38 +65,92 @@ function StockListPage() {
 
     if (selectedStorageLocation) {
       filteredList = filteredList.filter(stockItem => stockItem.location_section_name === selectedStorageLocation);
-    } 
-    
+    }
+
+    if (selectedLocationAlias) {
+      filteredList = filteredList.filter(stockItem => stockItem.location_alias === selectedLocationAlias);
+    }
+
     return filteredList;
   };
+  //별칭종류 가져오기
+  const aliasList = () => {
+    const filteredList = filterStockList();
+    if (Array.isArray(filteredList) && filteredList.length > 0) {
+      const uniqueAliases = [...new Set(filteredList.map(item => item.location_alias))];
+      //console.log("별칭종류 : ",uniqueAliases);
+      return uniqueAliases;
+    } else {
+      return [];
+    }
+  };
+  //체크박스 변경
+  const handleCheckboxChange = (stockItem) => {
+    const updatedSelectedItems = [...selectedItems];
+    const index = updatedSelectedItems.findIndex(item => item.stock_id === stockItem.stock_id);
+
+    if (index === -1) {
+      updatedSelectedItems.push(stockItem);
+    } else {
+      updatedSelectedItems.splice(index, 1);
+    }
+
+    setSelectedItems(updatedSelectedItems);
+  };
+
+  //상품이동 모달 켜기
+  const handleMoveItemsClick = () => {
+    setShowLocationForm(true);
+  };
+  
+  //선택해제
+  const resetSelectedItems = () => {
+    //데이터 삭제
+    setSelectedItems([]);
+    //체크해제
+
+  };
+
 
   return (
     <>
+      {showLocationForm && (
+        <LocationForm selectedItems={selectedItems} stockList={initialStockList} />
+      )}
+      
       <h1>보관장소 목록</h1>
-        보관유형
-        <select onChange={(e) => setSelectedStorageType(e.target.value === '매장' ? 'FR' : e.target.value === '창고' ? 'BA' : '')}>
-            <option>유형선택</option>
-            <option>매장</option>
-            <option>창고</option>
-        </select>
-        
-        보관장소
-        <select onChange={(e) => setSelectedLocation(e.target.value ==='구역선택'? '' : e.target.value)}>
-            <option>구역선택</option>
-            <option>상부장</option>
-            <option>하부장</option>
-            <option>냉장고</option>
-            <option>냉동고</option>
-            <option>쇼케이스</option>
-            <option>매대</option>
-            <option>진열대</option>
-            <option>다용도랙</option>
-            <option>기타</option>
-        </select>
+      보관유형
+      <select onChange={(e) => setSelectedStorageType(e.target.value === '매장' ? 'FR' : e.target.value === '창고' ? 'BA' : '')}>
+        <option>유형선택</option>
+        <option>매장</option>
+        <option>창고</option>
+      </select>
 
+      보관장소
+      <select onChange={(e) => setSelectedLocation(e.target.value === '구역선택' ? '' : e.target.value)}>
+        <option>구역선택</option>
+        <option>상부장</option>
+        <option>하부장</option>
+        <option>냉장고</option>
+        <option>냉동고</option>
+        <option>쇼케이스</option>
+        <option>매대</option>
+        <option>진열대</option>
+        <option>다용도랙</option>
+        <option>기타</option>
+      </select>
 
+      소분류
+      <select onChange={(e) => setSelectedLocationAlias(e.target.value === '별칭선택' ? '' : e.target.value)}>
+        <option>명칭선택</option>
+        {aliasList().map((alias, index) => (
+          <option key={index}>{alias}</option>
+        ))}
+      </select>
 
-
+      <br />
+       <button onClick={handleMoveItemsClick}>상품이동</button>
+      <button onClick={resetSelectedItems}>선택해제</button>
       <table border="1">
         <thead>
           <tr>
@@ -115,7 +170,7 @@ function StockListPage() {
         <tbody>
           {filterStockList().map((stockItem, index) => (
             <tr key={`${stockItem.location_id}-${index}`}>
-              <td><input type="checkbox" /></td>
+              <td><input type="checkbox" checked={selectedItems.includes(stockItem)} onChange={() => handleCheckboxChange(stockItem)} /></td>
               <td>{stockItem.location_id}</td>
               <td>{stockItem.location_code}</td>
               <td>{stockItem.location_area === 'FR' ? '매장' : stockItem.location_area === 'BA' ? '창고' : ''}</td>
@@ -144,7 +199,6 @@ export default StockListPage;
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-// axios 버전
 export async function loader({ request }) {
   console.log("StockListPage,loader>>>>>>>>>>>>.", request)
   const token = getAuthToken();
@@ -174,3 +228,6 @@ export async function loader({ request }) {
   console.log("resData", resData);
   return resData;
 }
+
+
+

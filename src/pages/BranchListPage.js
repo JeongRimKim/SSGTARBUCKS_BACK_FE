@@ -34,12 +34,12 @@ function BranchListPage() {
             <td>{index + 1}</td>
             <td>
             <NavLink to={`/admin/branch/detail/${userItem.branch_id}`} >{userItem.branch_id}</NavLink></td>
-            <td>{userItem.branch_name}</td>
-            <td>{userItem.branch_address}</td>
-            <td>{userItem.user_id}</td>
             <td>{userItem.user_name}</td>
             <td>{userItem.user_phone}</td>
             <td>{userItem.user_email}</td>
+            <td>{userItem.user_id}</td>
+            <td>{userItem.branch_name}</td>
+            <td>{userItem.branch_address}</td>
           </tr>
         ))}
         </tbody>
