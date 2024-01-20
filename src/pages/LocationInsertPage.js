@@ -11,14 +11,16 @@ function LocationInsertPage() {
   const [scanResult, setScanResult] = useState('');
   const [show, hide] = useState(false);
   const branch_id = localStorage.getItem("branch_id");
+  const [itemId, setitemId] = useState('');
   const navigate = useNavigate();
 
   const handleScanWebCam = (result) => {
     setScanResult(result);
   };
 
-  const handleclick = () => {
+  const handleclick = (itemId) => {
     hide(show => !show);
+    setitemId(itemId);
   };
 
   useEffect(() => {
@@ -29,16 +31,18 @@ function LocationInsertPage() {
 
       try {
         console.log("스캔결과값----------------->",scanResult);
+        console.log("선택한 검수내역의 아이템 아이디---->", itemId);
 
         const token = getAuthToken();
         const response = await axios.get(
-          `http://localhost:8000/api/v1/income/inspection/`,
+          `http://localhost:8000/api/v1/stock/checked/insert/location`,
           {
             headers: {
               'Content-Type': 'application/json',
               'jwtauthtoken': token
             },params: {
-              scanResult: scanResult
+              scanResult: scanResult,
+              item_id : itemId
             },
           }
         );
@@ -53,7 +57,7 @@ function LocationInsertPage() {
         console.log("resData", resData);
 
         //navigate('/income/list/inspection', { prams: { incomeId: resData } });
-        navigate(`/income/list/inspection/${resData}`);
+        navigate(`/stock/checked/inspection`);
       } catch (error) {
         console.error("Error during fetchData:", error);
         //navigate('/error', { state: { errorMessage: '조회시 없음' } });
@@ -68,11 +72,9 @@ function LocationInsertPage() {
     <>
       <h1>검수상품 보관장소등록</h1>
       <h2>검수내역 승인목록</h2>
-      <button onClick={handleclick} >{show ? '스캔취소' : '입고내역서 스캔하기'}</button>
+      
 
       {show && <QRScanner onScan={handleScanWebCam} />}
-
-      {scanResult}
 
       <table border="1">
         <thead>
@@ -83,17 +85,33 @@ function LocationInsertPage() {
             <th>입고일자</th>
             <th>입고총개수</th>
             <th>입고상태</th>
-            <th>입고목록번호</th>
             <th>입고상품개수</th>
             <th>입고상품번호</th>
-            <th>코드</th>
             <th>입고상품유통기한</th>
             <th>입고상품명</th>
-            <th>QR코드</th>
+            <th>보관장소</th>
+            <th>스캔장소</th>
           </tr>
         </thead>
         <tbody>
-
+        {inspectionList.map((incomeItem, index) => (
+            <tr key={`${incomeItem.income_id}-${index}`}>
+              <td><input type="checkbox" /></td>
+              <td>{index + 1}</td>
+              <td>{incomeItem.income_id}</td>
+              <td>{incomeItem.income_date}</td>
+              <td>{incomeItem.income_amount}</td>
+              <td>{incomeItem.income_list_result}</td>
+              <td>{incomeItem.income_list_quantity}</td>
+              <td>{incomeItem.item_id}</td>
+              <td>{incomeItem.item_exp}</td>
+              <td>{incomeItem.product_name}</td>
+              <td>
+                <button onClick={() => handleclick(incomeItem.item_id)}>{show ? '스캔취소' : '스캔'}</button>
+              </td>
+              <td>{scanResult}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </>
@@ -113,7 +131,7 @@ export async function loader({ request, params }) {
 
   const response = await axios({
     method: "GET",
-    url : `http://localhost:8000/api/v1/stock/checked/inspection/`,
+    url : `http://localhost:8000/api/v1/stock/checked/inspection`,
     headers: {
       'Content-Type': 'application/json',
       'jwtauthtoken': token

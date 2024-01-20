@@ -24,7 +24,6 @@ function IncomeListPage() {
             <th>입고목록번호</th>
             <th>입고상품개수</th>
             <th>입고상품번호</th>
-            <th>입고상품코드</th>
             <th>입고상품유통기한</th>
             <th>입고상품명</th>
           </tr>
