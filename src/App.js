@@ -20,6 +20,8 @@ import RegisterLocationPage, { action as registerLocationAction } from "./pages/
 import BranchListPage, { loader as branchLoader } from "./pages/BranchListPage.js";
 import BranchDetailPage, { loader as branchDetailLoader } from "./pages/BranchDetailPage.js";
 import InspectionPage, { loader as inspectionLoader } from "./pages/InspectionPage.js";
+import SpecificationPage from "./pages/SpecificationPage.js";
+import LocationInsertPage, { loader as LocationCheckedLoader } from "./pages/LocationInsertPage.js";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +94,13 @@ const router = createBrowserRouter([
       {
         path: 'income/list/inspection/:incomeId', element: <InspectionPage />,
         loader: inspectionLoader
+      },
+      {
+        path: 'income/specification', element: <SpecificationPage />
+      },
+      {
+        path: 'stock/checked/inspection', element: <LocationInsertPage />,
+        //loader: LocationCheckedLoader
       }
     ]
   }

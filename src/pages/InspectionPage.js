@@ -161,21 +161,24 @@ export async function loader({ request, params }) {
   console.log("InspectionPage, loader >>>>>>>>>>>>.", request, params);
   const token = getAuthToken();
   const branch_id = localStorage.getItem("branch_id");
-  const incomeId = params['incomeId'];
-
+  //const incomeId = params['incomeId'];
+  const incomeId = params.incomeId;
+  console.log("incomeId---------->", incomeId);
+  
   console.log("token:", token);
   console.log("branch_id:", branch_id);
 
   const response = await axios({
     method: "GET",
-    url: "http://localhost:8000/api/v1/income/list/inspection",
+    //url: "http://localhost:8000/api/v1/income/list/inspection",
+    url : `http://localhost:8000/api/v1/income/list/inspection/${incomeId}`,
     headers: {
       'Content-Type': 'application/json',
       'jwtauthtoken': token
-    },
-    params: {
-      incomeId: incomeId
     }
+    
+    //,params: {incomeId: incomeId}
+      
   });
 
   console.log("InspectionPage.response >>>>>>>>>>>..", response);
