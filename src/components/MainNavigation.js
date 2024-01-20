@@ -20,22 +20,6 @@ export default function MainNavigation() {
 
   return (
     <>
-      <div>
-      <input
-        type="text"
-        placeholder="검색어를 입력하세요"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button onClick={handleSearch}>검색</button>
-      </div>
-
-      <NavLink to="/"
-        className={({ isActive }) =>
-          isActive ? classes.menu : undefined
-        }
-      >메인페이지</NavLink><br />
-
 
       {!token && <NavLink
         to="/auth?mode=login"
@@ -43,37 +27,40 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >로그인페이지</NavLink>}
-
-      {token && <Form action="/logout" method="post">
-        <button>Logout</button>
-      </Form>}
-
-      <br />
-      {token && <NavLink
-        to="/mypage"
+           {token && <NavLink to="/"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >마이페이지</NavLink>}
-      <hr />
-      {token && <p>지점명 : {branch_name}</p>}
-
-      {token && <NavLink
-        to="/location/new"
-        className={({ isActive }) =>
-          isActive ? classes.menu : undefined
-        }
-      >장소등록</NavLink>}
-      <br />
+      >메인페이지</NavLink>
+      }
+      {token && <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={handleSearch}>검색</button>
+      </div>
+      }
       {token && <NavLink
         to="/qrcode/search"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
       >QR검색</NavLink>}
-      <br />
-
-      <br />
+      {token && <Form action="/logout" method="post">
+        <button>Logout</button>
+      </Form>}
+      <hr />
+      {token && <p>지점명 : {branch_name}</p>}
+      {token && <NavLink
+        to="/location/new"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >기준정보-장소등록</NavLink>}
+       <br />
       {token && <NavLink
         to="/income/list"
         className={({ isActive }) =>
@@ -111,7 +98,7 @@ export default function MainNavigation() {
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >상품관리-재고목록</NavLink>}
+      >재고관리-상품목록</NavLink>}
 
       <br />
       {token && <NavLink
@@ -120,13 +107,20 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >출고관리-판매상품갱신/승인</NavLink>}
+      <br/>
+        {token && <NavLink
+        to="/mypage"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >지점정보</NavLink>}
       <hr />
       {token && <NavLink
         to="/admin/branch/list"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >전지점정보조회</NavLink>}
+      >관리자 - 지점관리</NavLink>}
     </>
 
   )
