@@ -24,7 +24,7 @@ import SpecificationPage from "./pages/SpecificationPage.js";
 import LocationInsertPage, { loader as LocationCheckedLoader } from "./pages/LocationInsertPage.js";
 import DiscardItemQRPage from "./pages/DiscardItemQRPage.js";
 import UseItemQRPage from "./pages/UseItemQRPage.js";
-
+import LocationListPage, { loader as LocationListLoader } from "./pages/LocatoinListPage.js";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -112,6 +112,10 @@ const router = createBrowserRouter([
         path: 'qrcode/discard/product'
         , element: <DiscardItemQRPage />
       },
+      {
+        path: 'branch/location/list', element : <LocationListPage/>
+        ,loader: LocationListLoader
+      }
     ]
   }
 ]);

@@ -61,6 +61,13 @@ export default function MainNavigation() {
         }
       >기준정보-장소등록</NavLink>}
        <br />
+       {token && <NavLink
+        to="/branch/location/list"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >기준정보-장소내역</NavLink>}
+       <br />
       {token && <NavLink
         to="/income/list"
         className={({ isActive }) =>
