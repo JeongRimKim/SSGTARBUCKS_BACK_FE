@@ -127,6 +127,7 @@ export async function loader({ request,params }) {
   const token = getAuthToken();
   const branch_id = localStorage.getItem("branch_id");
   console.log("token:", token);
+  console.log("params:", params);
 
 
   const response = await axios({
@@ -137,7 +138,7 @@ export async function loader({ request,params }) {
       'jwtauthtoken': token
     },
     params: {
-      branch_id: branch_id
+      branch_id: params.branch_id
     }
   });
 
