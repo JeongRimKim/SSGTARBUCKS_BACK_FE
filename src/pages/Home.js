@@ -8,7 +8,7 @@ import axios from 'axios';
 //지점-메인
 const BranchMainRenderer = ({ onSelectDate, onLoadData }) => {
 
-    console.log("BranchMainRenderer.onLoadData>>>>>>>>>>>>>>>" ,  onLoadData);
+    //console.log("BranchMainRenderer.onLoadData>>>>>>>>>>>>>>>" ,  onLoadData);
     onLoadData = useLoaderData();
     const {expDataList, remainDataList } = onLoadData;
     const [ expData, setExpData ] = useState(expDataList);
@@ -191,11 +191,11 @@ export default function HomePage() {
 //////////////////////////////////////////////////////////////////////////////
 // axios 버전
 export async function loader({ request }) {
-    console.log("HomePage,loader>>>>>>>>>>>>.", request)
+    //console.log("HomePage,loader>>>>>>>>>>>>.", request)
     const token = getAuthToken();
     const branch_id = localStorage.getItem("branch_id");
-    console.log("token:", token);
-    console.log("branch_id:", branch_id);
+    //console.log("token:", token);
+    //console.log("branch_id:", branch_id);
 
     const expResponse = await axios({
         method: "GET",
@@ -210,7 +210,7 @@ export async function loader({ request }) {
         }
     });
 
-    console.log("HomePage.expResponse >>>>>>>>>>>..", expResponse);
+    //console.log("HomePage.expResponse >>>>>>>>>>>..", expResponse);
 
     if (expResponse.status !== 200) {
         throw json({ message: 'Could not save event.' }, { status: 500 });
@@ -230,7 +230,7 @@ export async function loader({ request }) {
         }
     });
 
-    console.log("HomePage.remainResponse >>>>>>>>>>>..", remainResponse);
+    //console.log("HomePage.remainResponse >>>>>>>>>>>..", remainResponse);
 
     if (expResponse.status !== 200) {
         throw json({ message: 'Could not save event.' }, { status: 500 });

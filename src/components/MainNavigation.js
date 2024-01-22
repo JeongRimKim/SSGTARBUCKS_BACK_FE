@@ -7,7 +7,7 @@ export default function MainNavigation() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const token = useRouteLoaderData('tokenRoot');
-  console.log("MainNavigation.token", token);
+  //console.log("MainNavigation.token", token);
   const branch_id = localStorage.getItem("branch_id");
   const branch_name = localStorage.getItem("branch_name");
 
@@ -27,7 +27,7 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >로그인페이지</NavLink>}
-           {token && <NavLink to="/"
+      {token && <NavLink to="/"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
@@ -101,6 +101,20 @@ export default function MainNavigation() {
       >재고관리-상품목록</NavLink>}
 
       <br />
+      {token && <NavLink
+        to="/qrcode/outcome/product"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >출고관리-사용등록</NavLink>}
+      <br/>
+      {token && <NavLink
+        to="/qrcode/discard/product"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >출고관리-폐기등록</NavLink>}
+      <br/>
       {token && <NavLink
         to="/stock/sale/list"
         className={({ isActive }) =>
