@@ -22,6 +22,8 @@ import BranchDetailPage, { loader as branchDetailLoader } from "./pages/BranchDe
 import InspectionPage, { loader as inspectionLoader } from "./pages/InspectionPage.js";
 import SpecificationPage from "./pages/SpecificationPage.js";
 import LocationInsertPage, { loader as LocationCheckedLoader } from "./pages/LocationInsertPage.js";
+import DiscardItemQRPage from "./pages/DiscardItemQRPage.js";
+import UseItemQRPage from "./pages/UseItemQRPage.js";
 
 const router = createBrowserRouter([
   {
@@ -101,7 +103,15 @@ const router = createBrowserRouter([
       {
         path: 'stock/checked/inspection', element: <LocationInsertPage />,
         loader: LocationCheckedLoader
-      }
+      },
+      {
+        path: 'qrcode/outcome/product'
+        , element: <UseItemQRPage />
+      },
+      {
+        path: 'qrcode/discard/product'
+        , element: <DiscardItemQRPage />
+      },
     ]
   }
 ]);
