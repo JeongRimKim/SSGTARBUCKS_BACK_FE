@@ -136,7 +136,7 @@ function StockListPage() {
         <option>쇼케이스</option>
         <option>매대</option>
         <option>진열대</option>
-        <option>다용도랙</option>
+        <option>다용도렉</option>
         <option>기타</option>
       </select>
 

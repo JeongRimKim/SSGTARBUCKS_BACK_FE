@@ -4,6 +4,7 @@ import { getAuthToken } from '../util/auth';
 
 const LocationForm = ({ selectedItems, stockList }) => {
     const [MoveItemsModal, setMoveItemsModal] = useState(true);
+    const [moveItems, setMoveItems] = useState(selectedItems);
     const [selectedMoveStorageType, setSelectedMovedStorageType] = useState('');
     const [selectedMoveStorageLocation, setSelecteMovedLocation] = useState('');
     const [selectedMoveLocationAlias, setSelectedMoveLocationAlias] = useState('');
@@ -64,8 +65,8 @@ const LocationForm = ({ selectedItems, stockList }) => {
         return filteredList;
     };
 
-      // 이동 보관장소 셀렉트박스 변경 이벤트 핸들러
-      const handleMoveStorageTypeChange = (e) => {
+    // 이동 보관장소 셀렉트박스 변경 이벤트 핸들러
+    const handleMoveStorageTypeChange = (e) => {
         setSelectedMovedStorageType(e.target.value);
     };
 
@@ -95,6 +96,33 @@ const LocationForm = ({ selectedItems, stockList }) => {
             setAliasOptions([]);
         }
     };
+
+
+    //이동개수수정
+    const handleQuantityChange = (index, delta, itemId) => {
+        const updatedStockList = [...moveItems];
+        const updatedItem = { ...moveItems[index] };
+        const max_count = selectedItems[index].stock_quantity;
+
+        console.log("updateItem : ", updatedItem, max_count);
+        if (delta === 1 && updatedItem.stock_quantity < max_count) {
+            // 증가 로직
+            updatedItem.stock_quantity += delta;
+            console.log("이동갯수조정", updatedStockList);
+        } else if (delta === -1 && updatedItem.stock_quantity > 1) {
+            // 감소 로직
+            updatedItem.stock_quantity += delta;
+            console.log("이동갯수조정", updatedStockList);
+        }
+
+        // 배열을 업데이트합니다.
+        updatedStockList[index] = updatedItem;
+
+        // setMoveItems를 호출하여 상태를 업데이트합니다.
+        setMoveItems(updatedStockList);
+    };
+
+
     return (
         <>
             {MoveItemsModal && (
@@ -120,11 +148,11 @@ const LocationForm = ({ selectedItems, stockList }) => {
                             <option>쇼케이스</option>
                             <option>매대</option>
                             <option>진열대</option>
-                            <option>다용도랙</option>
+                            <option>다용도렉</option>
                             <option>기타</option>
                         </select>
 
-                       소분류
+                        소분류
                         <select onChange={(e) => setSelectedMoveLocationAlias(e.target.value === '별칭선택' ? '' : e.target.value)}>
                             <option>명칭선택</option>
                             {aliasOptions.map((alias, index) => (
@@ -132,6 +160,46 @@ const LocationForm = ({ selectedItems, stockList }) => {
                             ))}
                         </select>
                     </div>
+
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>보관장소번호</th>
+                                <th>보관장소코드</th>
+                                <th>보관유형</th>
+                                <th>보관장소</th>
+                                <th>보관장소별칭</th>
+                                <th>보관번호</th>
+                                <th>보관상품명</th>
+                                <th>보관상품 규격</th>
+                                <th>유통기한</th>
+                                <th>이동개수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {moveItems.map((stockItem, index) => (
+                                <tr key={`${stockItem.location_id}-${index}`}>
+                                    <td>{stockItem.location_id}</td>
+                                    <td>{stockItem.location_code}</td>
+                                    <td>{stockItem.location_area === 'FR' ? '매장' : stockItem.location_area === 'BA' ? '창고' : ''}</td>
+                                    <td>{stockItem.location_section_name}</td>
+                                    <td>{stockItem.location_alias}</td>
+                                    <td>{stockItem.stock_id}</td>
+                                    <td>{stockItem.product_name}</td>
+                                    <td>{stockItem.product_standard}</td>
+                                    <td>{stockItem.item_exp}</td>
+                                    <td>
+                                        <input type='hidden' value={stockItem.item_id} />
+                                        <button onClick={() => handleQuantityChange(index, -1, stockItem.item_id)}>-</button>
+                                        {stockItem.stock_quantity}
+                                        <button onClick={() => handleQuantityChange(index, 1, stockItem.item_id)}>+</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+
 
                     <button onClick={() => action({ selectedMoveStorageType, selectedMoveLocationAlias, selectedItems })}>이동하기</button>
                 </div>
@@ -157,8 +225,7 @@ export async function action({ selectedMoveStorageType, selectedMoveLocationAlia
     console.log("branch_id:", branch_id);
     const location_area = `${selectedMoveStorageType}`;
     const location_alias = `${selectedMoveLocationAlias}`;
-    const item_list = selectedItems.map(item => item.item_id);
-
+    const item_list = selectedItems.map(item => ({ item_id: item.item_id, stock_quantity: item.stock_quantity }));
     const jsonDataArray = {
         branch_id: branch_id,
         location_area: location_area,
