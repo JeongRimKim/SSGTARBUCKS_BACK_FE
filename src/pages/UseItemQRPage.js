@@ -10,13 +10,20 @@ function UseItemQRPage() {
   const branch_id = localStorage.getItem("branch_id");
   const navigate = useNavigate();
 
-  const handleScanWebCam = (result) => {
-    setScanResult(result);
-  };
-
   const handleclick = () => {
     hide(show => !show);
   };
+
+
+  const handleScanProductQR = (result) => {
+    if (result.includes('@')) {
+      setScanResult(result);
+    } else {
+      console.log('입력된 값이 유효하지 않습니다. "@"가 포함되어야 합니다.');
+      // 유효하지 않은 경우에 대한 처리를 추가할 수 있습니다.
+    }
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +33,9 @@ function UseItemQRPage() {
 
       try {
         const token = getAuthToken();
+        const qrcode_value = scanResult;
         const response = await axios.get(
-          `http://localhost:8000/api/v1/qrcode/search/${scanResult}`,
+          `http://localhost:8000/api/v1/qrcode/outcome/product/${qrcode_value}`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -38,7 +46,7 @@ function UseItemQRPage() {
           }
         );
 
-        console.log("SearchPage.response >>>>>>>>>>>..", response);
+        console.log("response >>>>>>>>>>>..", response);
 
         if (response.status !== 200) {
           throw json({ message: '검색에 실패했습니다.' }, { status: 500 });
@@ -47,7 +55,7 @@ function UseItemQRPage() {
         const resData = response.data;
         console.log("resData", resData);
 
-        navigate('/qrcode/search/result', { state: { storage: resData } });
+        navigate('/');
       } catch (error) {
         console.error("Error during fetchData:", error);
         navigate('/error', { state: { errorMessage: '조회시 없음' } });
@@ -64,7 +72,7 @@ function UseItemQRPage() {
       <h1>상품선택</h1>
       <div>
         <button onClick={handleclick}> {show ? '스캔취소' : '스캔하기'}</button><br/>
-        {show && <QRScanner onScan={handleScanWebCam} />}
+        {show && <QRScanner onScan={handleScanProductQR} />}
 
         {scanResult}
       </div>

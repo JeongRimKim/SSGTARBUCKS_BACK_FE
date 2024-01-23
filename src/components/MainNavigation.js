@@ -82,15 +82,6 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >입고관리-검수하기</NavLink>}
-
-      <br />
-      {token && <NavLink
-        to="/stock/list"
-        className={({ isActive }) =>
-          isActive ? classes.menu : undefined
-        }
-      >재고관리-보관목록</NavLink>}
-
       <br />
       {token && <NavLink
         to="/stock/checked/inspection"
@@ -98,15 +89,29 @@ export default function MainNavigation() {
           isActive ? classes.menu : undefined
         }
       >재고관리-검수상품 보관장소등록</NavLink>}
-
       <br />
       {token && <NavLink
+        to="/stock/list"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >재고관리-보관장소내역</NavLink>}
+      <br/>
+            {token && <NavLink
         to="/product/list"
         className={({ isActive }) =>
           isActive ? classes.menu : undefined
         }
-      >재고관리-상품목록</NavLink>}
+      >재고관리-상품내역</NavLink>}
 
+      <br />
+      {token && <NavLink
+        to="/qrcode/move/product"
+        className={({ isActive }) =>
+          isActive ? classes.menu : undefined
+        }
+      >출고관리-상품이동</NavLink>}
+ 
       <br />
       {token && <NavLink
         to="/qrcode/outcome/product"
