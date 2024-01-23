@@ -1,10 +1,14 @@
 import { json, useLoaderData } from 'react-router-dom';
+import React, { useState } from 'react';
 import { getAuthToken } from '../util/auth';
 import axios from 'axios';
+import QRImgReader from '../components/QRImgReader';
 
 
 function LocatoinListPage() {
   const locationList = useLoaderData();
+  const [selectedLocationCode, setSelectedLocationCode] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //console.log("ProductListPage, productList >>>>>>>>>>>>.", locationList);
 
   const getLocationType = (area) => {
@@ -36,11 +40,30 @@ function LocatoinListPage() {
     const firstLetter = section.charAt(0).toUpperCase();
     return LOCATION_SECTION_MAP[firstLetter] || section;
   };
+  const openModal = (locationItem) => {
+    setSelectedLocationCode(locationItem.location_code);
+    console.log("openModal", locationItem.location_code);
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setSelectedLocationCode(null);
+    setIsModalOpen(false);
+  };
 
+  const sendLocationQRValue = selectedLocationCode;
 
   return (
     <>
+       {/* 모달 컴포넌트 */}
+      {isModalOpen && (
+        <div>
+          <p>QR조회</p>
+          <p><QRImgReader onSendLocationQRValue={sendLocationQRValue}/></p>
+          <button onClick={closeModal}>닫기</button>
+        </div>
+      )}
+
       <h1>보관장소목록</h1>
       <table border="1">
         <thead>
@@ -60,12 +83,16 @@ function LocatoinListPage() {
               <td>{getLocationSection(locationItem.location_section)}</td>
               <td>{locationItem.location_alias}</td>
               <td>{locationItem.location_code}</td>
-              <td>QR</td>
+              <td>
+                <button onClick={() => openModal(locationItem)}>QR</button>
+              </td>
               <td>삭제</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
     </>
   )
 
