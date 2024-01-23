@@ -17,7 +17,7 @@ function AuthForm() {
   return (
     <>
       <Form method="post" >
-        <h1>{isLogin ? 'Log in' : 'Create a new user'}</h1>
+        <h1>{isLogin ? 'Log in' : '비밀번호 찾기'}</h1>
         {!isLogin ? null : <>
           <p>
             <label htmlFor="user_id">아이디</label>
@@ -30,46 +30,17 @@ function AuthForm() {
         </>
         }
         
-        {isLogin ? null : <>
-          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-          <div>
-            <input type="text" name="name" placeholder="Name" />
-          </div>
-          <div>
-            <input type="text" name="username" placeholder="*Username" />
-          </div>
-          <div>
-            <input type="text" name="email" placeholder="*Email" />
-          </div>
-          <div>
-            <input type="password" name="password" placeholder="Password" />
-          </div>
-          <div>
-            <input type="text" name="address" placeholder="Address" />
-          </div>
-          <div>
-            <input type="text" name="phone" placeholder="Phone" />
-          </div>
-          <div>
-            <input type="text" name="website" placeholder="Website" />
-          </div>
-          <div>
-            <input type="text" name="company" placeholder="Company" />
-          </div>
-          <div>
-            <select name="role">
-              <option>URER_ROLE</option>
-              <option>URER_ADMIN</option>
-            </select>
-          </div>
+        {isLogin ? null : 
+        <>
+          
         </>
         }
-
-
+        <br />
         <div>
-          <Link to={`?mode=${isLogin ? 'signup' : 'login'}`}>
-            {isLogin ? 'Create new user' : 'Login'}
+          <Link to={`${isLogin ? 'find' : '?mode=login'}`}>
+            {isLogin ? '비밀번호 찾기' : '로그인하러가기'}
           </Link>
+          <br /><br />
           <button disabled={isSubmitting}>
             {isSubmitting ? 'Submitting...' : 'Save'}
           </button>

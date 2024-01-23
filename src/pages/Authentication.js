@@ -16,12 +16,13 @@ export async function action({ request }) {
   const searchParams = new URL(request.url).searchParams;
   console.log("searchParams>>", searchParams);
   const mode = searchParams.get('mode') || 'login';
-  console.log("mode>>", mode);
+  console.log("mode1>>", mode);
 
   const data = await request.formData();
   const authData = {
     user_id: data.get('user_id'),
-    user_pw: data.get('user_pw')
+    user_pw: data.get('user_pw'),
+    user_email: data.get('user_email'),
   };
   console.log("authData>>", authData);
   let resData = '';
@@ -54,7 +55,9 @@ export async function action({ request }) {
     console.log("error:", error);
     throw new Error("error 발생되었습니다");
   }
-
+  if(mode === "signup") {
+    return redirect('/auth?mode=signup');
+  }
   return redirect('/');
 }
 
@@ -66,7 +69,7 @@ export async function action1({ request }) {
   const searchParams = new URL(request.url).searchParams;
   console.log("searchParams>>", searchParams);
   const mode = searchParams.get('mode') || 'login';
-  console.log("mode>>", mode);
+  console.log("mode2>>", mode);
 
   const data = await request.formData();
   const authData = {
