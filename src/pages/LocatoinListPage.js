@@ -53,6 +53,38 @@ function LocatoinListPage() {
 
   const sendLocationQRValue = selectedLocationCode;
 
+
+  //장소 삭제
+  const handleDeleteLocation = async (location_id) => {
+    const token = getAuthToken();
+    const branch_id = localStorage.getItem("branch_id");
+
+    try {
+      const response = await axios.delete(`http://localhost:8000/api/v1/branch/location/${location_id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'jwtauthtoken': token,
+          branch_id: branch_id
+        }
+      });
+
+      console.log("LocatoinListPage(delete).response >>>>>>>>>>>..", response);
+
+      if (response.status !== 200) {
+        throw json({ message: 'Could not save event.' }, { status: 500 });
+      }
+    
+      
+      // 응답을 확인하고 필요에 따라 추가 작업을 수행하세요.
+      console.log(response.data);
+
+      // 성공적으로 삭제된 후에 원하는 동작을 수행하세요.
+    } catch (error) {
+      // 삭제 요청이 실패한 경우의 예외 처리
+      console.error('Error during location deletion:', error);
+    }
+  };
+
   return (
     <>
        {/* 모달 컴포넌트 */}
@@ -86,7 +118,9 @@ function LocatoinListPage() {
               <td>
                 <button onClick={() => openModal(locationItem)}>QR</button>
               </td>
-              <td>삭제</td>
+              <td>
+                <button onClick={() => handleDeleteLocation(locationItem.location_id)}>삭제</button>
+              </td>
             </tr>
           ))}
         </tbody>
