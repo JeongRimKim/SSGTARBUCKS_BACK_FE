@@ -22,6 +22,7 @@ import BranchDetailPage, { loader as branchDetailLoader } from "./pages/BranchDe
 import InspectionPage, { loader as inspectionLoader } from "./pages/InspectionPage.js";
 import SpecificationPage from "./pages/SpecificationPage.js";
 import LocationInsertPage, { loader as LocationCheckedLoader } from "./pages/LocationInsertPage.js";
+import MoveItemQRPage from "./pages/MoveItemQRPage.js";
 import DiscardItemQRPage from "./pages/DiscardItemQRPage.js";
 import UseItemQRPage from "./pages/UseItemQRPage.js";
 import LocationListPage, { loader as LocationListLoader } from "./pages/LocatoinListPage.js";
@@ -34,9 +35,7 @@ const router = createBrowserRouter([
     loader: tokenLoader,
     children: [
       { index: true, element: <HomePage />, loader: homeLoader },
-
       { path: 'signup', element: <SignupPage /> },
-
       {
         path: 'auth',
         element: <AuthenticationPage />,
@@ -72,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: 'stock/list', element: <StockListPage />,
         loader: stockLoader
+      },
+      {
+        path: 'qrcode/move/product'
+        , element: <MoveItemQRPage />
       },
       {
         path: 'product/list', element: <ProductListPage />,
