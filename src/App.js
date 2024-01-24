@@ -1,7 +1,7 @@
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage, { loader as homeLoader } from "./pages/Home";
-import SignupPage, { action as signupAction } from "./pages/SignupPage.js";
+import FindPage from "./pages/FindPage.js";
 import RootLayout from "./pages/Root";
 import ErrorPage from './pages/Error';
 import AuthenticationPage, { action as authAction } from "./pages/Authentication.js";
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     loader: tokenLoader,
     children: [
       { index: true, element: <HomePage />, loader: homeLoader },
-      { path: 'signup', element: <SignupPage /> },
+      { path: '/auth/find', element: <FindPage /> },
       {
         path: 'auth',
         element: <AuthenticationPage />,

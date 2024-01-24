@@ -2,7 +2,7 @@
 import { Form, NavLink, useNavigate, useRouteLoaderData } from "react-router-dom";
 import React, { useState } from 'react';
 import classes from './MainNavigation.module.css'
-
+ 
 export default function MainNavigation() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
