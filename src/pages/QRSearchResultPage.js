@@ -9,7 +9,7 @@ function QRSearchResultPage() {
     // Handle the case where storage is undefined or null
     return <p>Loading... {searchResult}</p>; // Or any other loading state
   }
-  const resultMap = searchResult.map((item, index) => ({
+  const totalList = searchResult.map((item, index) => ({
     product_id: item.product_id,
     product_name: item.product_name,
     product_standard: item.product_standard,
@@ -34,28 +34,45 @@ function QRSearchResultPage() {
   return (
     <>
       <h1>검색결과</h1>
-      <table>
-        <thead>
-          <th> 상품정보</th>
-          <th></th>
-          <th>위치정보</th>
+      <table border="1">
+      <thead>
+          <tr>
+            <th>번호</th>
+            <th>상품명</th>
+            <th>규격</th>
+            <th>단위</th>
+            <th>상세</th>
+            <th>카테고리</th>
+            <th>상품고유번호</th>
+            <th>유통기한</th>
+            <th>상품상태</th>
+            <th>저장유형</th>
+            <th>저장코드</th>
+            <th>저장구역</th>
+            <th>저장구역명</th>
+            <th>저장별칭</th>
+            <th>수량</th>
+          </tr>
         </thead>
         <tbody>
 
-          {resultMap.map((result, index) => (
-            <tr key={index}>
-              <td>
-                {result.category_name}&nbsp;&nbsp;
-                {result.product_id},&nbsp;&nbsp;
-                {result.product_name}({result.product_standard} {result.product_unit})&nbsp;&nbsp;
-                {result.item_code}&nbsp;&nbsp;
-                {result.item_exp}&nbsp;&nbsp;
-                {result.item_qrcode_value}
-              </td>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              <td>
-                {result.location_code},{result.stock_quantity},{result.location_section_name},{result.location_alias},{result.location_qrcode_value}
-              </td>
+          {totalList.map((totalItem, index) => (
+            <tr key={`${totalItem.product_id}-${index}`}>
+                  <td>{index + 1}</td>
+                  <td>{totalItem.product_name}</td>
+                  <td>{totalItem.product_standard}</td>
+                  <td>{totalItem.product_unit}</td>
+                  <td>{totalItem.product_spec}</td>
+                  <td>{totalItem.category_name}</td>
+                  <td>{totalItem.item_id}</td>
+                  <td>{totalItem.item_exp}</td>
+                  <td>{totalItem.item_status}</td>
+                  <td>{totalItem.location_code}</td>
+                  <td>{totalItem.location_area}</td>
+                  <td>{totalItem.location_section}</td>
+                  <td>{totalItem.location_section_name}</td>
+                  <td>{totalItem.location_alias}</td>
+                  <td>{totalItem.stock_quantity}</td>
 
             </tr>
           ))}
