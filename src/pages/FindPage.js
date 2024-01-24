@@ -25,7 +25,14 @@ function FindPage() {
       });
 
       console.log('Axios Response:', response.data);
-      setShowAuthCodeInput(true);
+
+      if(response.data === ''){
+        console.log("일치하는 유저정보 없음");
+      }else{
+        console.log("일치하는 유저정보 있음");
+        setShowAuthCodeInput(true);
+
+      } 
 
     } catch (error) {
       console.error('Axios Error:', error);
@@ -51,7 +58,7 @@ function FindPage() {
       if(verificationResponse.data === '성공'){
         navigate('/auth?mode=login');
       }
-      // Update the state or handle the result as needed
+
       setVerificationResult(verificationResponse.data);
 
     } catch (error) {
