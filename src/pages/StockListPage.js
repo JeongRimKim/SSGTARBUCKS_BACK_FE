@@ -147,7 +147,6 @@ function StockListPage() {
           <option key={index}>{alias}</option>
         ))}
       </select>
-
       <br />
        <button onClick={handleMoveItemsClick}>상품이동</button>
       <button onClick={resetSelectedItems}>선택해제</button>
