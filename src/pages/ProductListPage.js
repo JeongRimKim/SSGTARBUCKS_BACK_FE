@@ -76,7 +76,7 @@ const ImageDisplayComponent = ({ image_path }) => {
     const fetchData = async () => {
       try {
         const token = getAuthToken();
-
+        //get으로 하면 파일 경로를 들켜서 put방식으로 변경
         const response = await axios.put(
           'http://localhost:8000/api/v1/stock/product/image',
           { image_path: image_path },
@@ -96,7 +96,7 @@ const ImageDisplayComponent = ({ image_path }) => {
         console.error('이미지를 가져오는 중 오류 발생:', error);
       }
     };
-
+    
     fetchData();
   }, [image_path]);
 
